@@ -66,7 +66,7 @@ export default {
   },
   async fetch() {
     try {
-      const response = await this.$axios.get(
+      const response = await this.$axios.put(
         `document/${this.$route.params.id}`
       )
       if (response.status === 200) {
