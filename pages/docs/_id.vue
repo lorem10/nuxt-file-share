@@ -1,6 +1,6 @@
 <template>
   <v-container>
-    <row>
+    <v-row>
       <v-col v-if="!$fetchState.pending" cols="12">
         <v-card elevation="5">
           <v-card-title>{{ doc.title }}</v-card-title>
@@ -61,7 +61,7 @@
           </v-card-actions>
         </v-card>
       </v-col>
-    </row>
+    </رrow>
   </v-container>
 </template>
 
