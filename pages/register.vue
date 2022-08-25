@@ -25,6 +25,14 @@
 export default {
   name: 'RegisterPage',
   layout: 'auth',
+
+  mounted() {
+    this.$store.commit('SET_SNACK_BAR_OPTION', {
+      message: 'برای ثبت نام، اطلاعات خود را وارد نمایید. فقط فیلد های دارای ستاره الزامی میباشند',
+      color: 'info',
+      status: 200,
+    })
+  },
 }
 </script>
 
