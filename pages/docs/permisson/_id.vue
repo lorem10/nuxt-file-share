@@ -10,15 +10,26 @@
       </v-col>
       <v-col cols="12" md="4">
         <v-sheet rounded class="pa-5">
-          <div v-for="(usr, index) of users" :key="index">
-            <p>{{ usr.userName }}</p>
-            <input
-              :id="`radio${index}`"
-              type="radio"
-              value="true"
-              :checked="checked(usr.userId)"
-            />
-            <input :id="`radio${index}`" type="radio" value="false" />
+          <v-combobox
+            v-model="userAccess"
+            :items="users"
+            item-value="userId"
+            item-text="userName"
+            chips
+          ></v-combobox>
+          <div>
+            <v-radio-group v-model="radioGroup">
+              <v-radio
+                v-for="n in [
+                  { value: 1, text: 'دسترسی داشته باشد' },
+                  { value: 0, text: 'دسترسی نداشته باشد' },
+                ]"
+                :key="n.value"
+                :label="n.text"
+                :value="n.value"
+              ></v-radio>
+            </v-radio-group>
+            <v-btn color="primary" @click="setPermisson"> ارسال </v-btn>
           </div>
         </v-sheet>
       </v-col>
@@ -32,10 +43,15 @@ export default {
   data() {
     return {
       users: [],
-      userAccess: [],
+      radioGroup: 1,
+      userAccess: null,
       table: {
         data: [],
         header: [
+          {
+            text: 'id',
+            value: 'userId',
+          },
           {
             text: 'نام کاربری',
             value: 'userName',
@@ -52,14 +68,52 @@ export default {
       },
     }
   },
-  fetch() {
-    this.getAllPermittedUsers()
-    this.getAllUsers()
+  async fetch() {
+    await this.getAllUsers()
+    await this.getAllPermittedUsers()
   },
-
   methods: {
-    checked(id) {
-      this.table.data.some(() => console.log(5))
+    async setPermisson() {
+      try {
+        const response = await this.$axios.post('Permission', {
+          targetUserId: this.userAccess.userId,
+          documentId: Number(this.$route.params.id),
+          haveAccess: Boolean(this.radioGroup),
+        })
+        if (response.status !== 200) {
+          if (response?.data?.errors) {
+            this.$store.commit('SET_SNACK_BAR_OPTION', {
+              message: response.data.errors,
+              color: 'error',
+              status: response.data.status,
+            })
+          } else {
+            this.$nuxt.error({
+              status: response?.status ?? 500,
+              message:
+                response?.errors ??
+                'کابر عزیز مشکلی پیش آمده است. ما به آن رسیدگی میکنیم',
+            })
+          }
+        } else {
+          this.getAllPermittedUsers()
+        }
+      } catch (err) {
+        if (err?.response?.data?.errors) {
+          this.$store.commit('SET_SNACK_BAR_OPTION', {
+            message: err.response.data.errors,
+            color: 'error',
+            status: err?.response?.status ?? 500,
+          })
+        } else {
+          this.$nuxt.error({
+            status: err?.response?.status ?? 500,
+            message:
+              err?.message ??
+              'کابر عزیز مشکلی پیش آمده است. ما به آن رسیدگی میکنیم',
+          })
+        }
+      }
     },
     async getAllUsers() {
       try {
