@@ -50,6 +50,11 @@ export default {
           link: '/upload',
           icon: 'mdi-file-document-multiple-outline',
         },
+        {
+          title: 'اسناد',
+          link: '/docs',
+          icon: 'mdi-file-document-outline',
+        },
       ],
       right: true,
     }
