@@ -28,37 +28,35 @@
       </M-BoxForm>
 
       <v-row>
-        <v-col cols="12">
-          <v-col
-            v-for="(doc, index) of docs"
-            :key="index"
-            cols="12"
-            md="6"
-            lg="3"
-          >
-            <v-card elevation="5">
-              <v-card-title>{{ doc.title }}</v-card-title>
-              <v-card-text>
-                <p>
-                  {{ doc.description }}
-                </p>
-                <p>نام فایل :{{ doc.fileName }}</p>
-                <p>
-                  سطح دسترسی:
-                  <span v-if="doc?.documentAccess === 0"> خصوصی</span>
-                  <span v-else-if="doc?.documentAccess === 1"> عمومی</span>
-                </p>
-              </v-card-text>
-              <v-card-actions>
-                <v-btn
-                  :to="{ name: 'docs-id', params: { id: doc.id } }"
-                  color="primary"
-                >
-                  مشاهده
-                </v-btn>
-              </v-card-actions>
-            </v-card>
-          </v-col>
+        <v-col
+          v-for="(doc, index) of docs"
+          :key="index"
+          cols="12"
+          md="6"
+          lg="3"
+        >
+          <v-card elevation="5">
+            <v-card-title>{{ doc.title }}</v-card-title>
+            <v-card-text>
+              <p>
+                {{ doc.description }}
+              </p>
+              <p>نام فایل :{{ doc.fileName }}</p>
+              <p>
+                سطح دسترسی:
+                <span v-if="doc?.documentAccess === 0"> خصوصی</span>
+                <span v-else-if="doc?.documentAccess === 1"> عمومی</span>
+              </p>
+            </v-card-text>
+            <v-card-actions>
+              <v-btn
+                :to="{ name: 'docs-id', params: { id: doc.id } }"
+                color="primary"
+              >
+                مشاهده
+              </v-btn>
+            </v-card-actions>
+          </v-card>
         </v-col>
       </v-row>
     </v-sheet>
