@@ -47,6 +47,17 @@
             <v-btn class="mr-3" color="green" @click="downloadDoc">
               بارگیری سند
             </v-btn>
+            <v-btn
+              v-if="doc.ownerUserId === $auth.user.userId"
+              class="mr-3"
+              :to="{
+                name: 'docs-permisson-id',
+                params: { id: $route.params.id },
+              }"
+              color="blue"
+            >
+              اشتراک گذاری
+            </v-btn>
           </v-card-actions>
         </v-card>
       </v-col>
