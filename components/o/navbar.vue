@@ -21,7 +21,7 @@
     <v-spacer />
 
     <M-DarkModeSwitcher />
-    <v-btn icon dark to="/login">
+    <v-btn icon dark @click="$auth.logout()">
       <v-icon>mdi-location-exit</v-icon>
     </v-btn>
   </v-app-bar>
