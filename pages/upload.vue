@@ -79,6 +79,13 @@ export default {
       },
     }
   },
+  mounted() {
+    this.$store.commit('SET_SNACK_BAR_OPTION', {
+      message: 'در صفحه میتوانید سند خود را بارگزاری نمایید، فیلد کد سند اختیاری میباشد',
+      color: 'info',
+      status: 200,
+    })
+  },
   methods: {
     initFormData() {
       const formData = new FormData()
