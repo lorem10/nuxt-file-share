@@ -40,6 +40,7 @@
 <script>
 export default {
   name: 'PermissonPage',
+  middleware: 'auth',
   data() {
     return {
       users: [],

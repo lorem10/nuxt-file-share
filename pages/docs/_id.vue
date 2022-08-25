@@ -68,6 +68,7 @@
 <script>
 export default {
   name: 'DocIdPage',
+  middleware: 'auth',
   data() {
     return {
       doc: null,

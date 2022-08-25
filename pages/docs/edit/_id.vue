@@ -50,6 +50,7 @@
 <script>
 export default {
   name: 'EditDocPage',
+  middleware: 'auth',
   data() {
     return {
       documentAccessItems: [
