@@ -44,6 +44,9 @@
             >
               تغییر
             </v-btn>
+            <v-btn class="mr-3" color="green" @click="downloadDoc">
+              بارگیری سند
+            </v-btn>
           </v-card-actions>
         </v-card>
       </v-col>
@@ -101,6 +104,53 @@ export default {
     }
   },
   methods: {
+    async downloadDoc() {
+      try {
+        const response = await this.$axios.get(
+          `Document/Download/${this.$route.params.id}`,
+          { responseType: 'blob' }
+        )
+        if (response.status !== 200) {
+          if (response?.data?.errors) {
+            this.$store.commit('SET_SNACK_BAR_OPTION', {
+              message:
+                response?.data?.errors ??
+                'کابر عزیز مشکلی پیش آمده است. ما به آن رسیدگی میکنیم',
+              color: 'error',
+              status: response?.status ?? 500,
+            })
+          }
+        } else {
+          const url = window.URL.createObjectURL(new Blob([response.data]))
+          const link = document.createElement('a')
+          link.href = url
+          link.setAttribute('download', 'file.pdf') // or any other extension
+          document.body.appendChild(link)
+          link.click()
+          document.body.removeChild(link)
+          this.$store.commit('SET_SNACK_BAR_OPTION', {
+            message: 'براگیری شروع شد',
+            color: 'green',
+            status: 200,
+          })
+        }
+      } catch (err) {
+        if (err?.response?.data?.errors) {
+          this.$store.commit('SET_SNACK_BAR_OPTION', {
+            message: err.response.data.errors,
+            color: 'error',
+            status: err?.response?.status ?? 500,
+          })
+        } else {
+          this.$nuxt.error({
+            status: err?.response?.status ?? 500,
+            message:
+              err?.message ??
+              'کابر عزیز مشکلی پیش آمده است. ما به آن رسیدگی میکنیم',
+          })
+        }
+      }
+    },
     async deletDoc() {
       try {
         const response = await this.$axios.delete(
