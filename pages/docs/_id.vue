@@ -17,7 +17,11 @@
           </v-card-text>
           <v-card-actions>
             <div class="text-center">
-              <v-dialog v-model="dialog" width="500">
+              <v-dialog
+                v-if="$auth.user.userId === doc.ownerUserId"
+                v-model="dialog"
+                width="500"
+              >
                 <template #activator="{ on, attrs }">
                   <v-btn color="error" v-bind="attrs" v-on="on"> حذف </v-btn>
                 </template>
@@ -38,12 +42,14 @@
             </div>
 
             <v-btn
+              v-if="$auth.user.userId === doc.ownerUserId"
               class="mr-3"
               :to="{ name: 'docs-edit-id', params: { id: doc.id } }"
               color="yellow"
             >
               تغییر
             </v-btn>
+
             <v-btn class="mr-3" color="green" @click="downloadDoc">
               بارگیری سند
             </v-btn>
@@ -136,7 +142,7 @@ export default {
           const url = window.URL.createObjectURL(new Blob([response.data]))
           const link = document.createElement('a')
           link.href = url
-          link.setAttribute('download', 'file.pdf') // or any other extension
+          link.setAttribute('download', this.doc.fileName) // or any other extension
           document.body.appendChild(link)
           link.click()
           document.body.removeChild(link)
