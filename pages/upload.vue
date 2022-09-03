@@ -19,7 +19,7 @@
             <M-BoxInput
               v-model="uploadFormData.title"
               rules="required|min:3|max:30"
-              label="عنوان"
+              label="عنوان*"
               solo
             ></M-BoxInput>
             <M-BoxSelect
@@ -50,7 +50,7 @@
               v-model="uploadFormData.file"
               required
               solo
-              label="انتخاب فایل"
+              label="انتخاب فایل*"
             />
             <v-btn color="primary" type="submit"> ارسال سند </v-btn>
           </M-BoxForm>
