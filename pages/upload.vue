@@ -71,7 +71,7 @@ export default {
         { text: 'عمومی', value: 1 },
       ],
       uploadFormData: {
-        code: null,
+        code: '',
         title: '',
         description: '',
         documentAccess: 0,
@@ -103,7 +103,7 @@ export default {
     async submitUploadForm() {
       try {
         const response = await this.$axios.post('document', this.initFormData())
-        if (response.status !== 201 || response.status !== 200) {
+        if (response.status !== 201) {
           if (response?.data?.errors) {
             this.$store.commit('SET_SNACK_BAR_OPTION', {
               message: response.data.errors,

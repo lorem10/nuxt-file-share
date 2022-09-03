@@ -67,7 +67,7 @@ export default {
   },
   async fetch() {
     try {
-      const response = await this.$axios.put(
+      const response = await this.$axios.get(
         `document/${this.$route.params.id}`
       )
       if (response.status === 200) {
@@ -104,11 +104,11 @@ export default {
   methods: {
     async submitEditForm() {
       try {
-        const response = await this.$axios.post(
-          `document${this.$route.params.id}`,
+        const response = await this.$axios.put(
+          `document/${this.$route.params.id}`,
           this.editFormData
         )
-        if (response.status !== 201) {
+        if (response.status !== 200) {
           if (response?.data?.errors) {
             this.$store.commit('SET_SNACK_BAR_OPTION', {
               message: response.data.errors,
