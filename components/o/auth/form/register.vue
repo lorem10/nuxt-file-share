@@ -32,7 +32,7 @@
       <v-col cols="6">
         <M-BoxInput
           v-model="passwordRepeat"
-          rules="required|min:8|max:100"
+          rules="required|min:8|max:100|confirmed:رمزعبور*"
           type="password"
           label="تکرار رمز عبور*"
           solo

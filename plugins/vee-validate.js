@@ -7,11 +7,17 @@ import {
   email,
   required,
   length,
+  confirmed,
 } from 'vee-validate/dist/rules'
 
 extend('numeric', {
   ...numeric,
   message: '{_field_} باید حتما عدد باشد',
+})
+
+extend('confirmed', {
+  ...confirmed,
+  message: 'رمز عبور شما مطابقت ندارد',
 })
 
 extend('email', {
