@@ -37,7 +37,7 @@ export default {
         if (response.data.isSuccess !== true) {
           if (response.data?.errors) {
             this.$store.commit('SET_SNACK_BAR_OPTION', {
-              message: response.errors,
+              message: response.data.errors,
               color: 'error',
               status: response.status,
             })
@@ -51,18 +51,20 @@ export default {
           }
         }
       } catch (err) {
-        if (err?.response) {
+        if (err.status === 406) {
           this.$store.commit('SET_SNACK_BAR_OPTION', {
             message: 'نام کاربری یا رمز عبور اشتباه میباشد',
             color: 'error',
-            status: err.response.status ?? 406,
+            status: 406,
           })
         } else {
           this.$store.commit('SET_SNACK_BAR_OPTION', {
             message:
-              err?.message ?? 'خطایی رخ داده است. ما به آن رسیدگی میکنیم',
+              err.response?.data.errors ??
+              err?.message ??
+              'خطایی رخ داده است. ما به آن رسیدگی میکنیم',
             color: 'error',
-            status: err?.response?.status ?? 500,
+            status: err?.status ?? 500,
           })
         }
       }
