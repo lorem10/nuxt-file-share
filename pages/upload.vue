@@ -103,18 +103,18 @@ export default {
     async submitUploadForm() {
       try {
         const response = await this.$axios.post('document', this.initFormData())
-        if (response.status !== 201) {
+        if (response.status !== 201 || response.status !== 200) {
           if (response?.data?.errors) {
             this.$store.commit('SET_SNACK_BAR_OPTION', {
               message: response.data.errors,
               color: 'error',
-              status: response.data.status,
+              status: response.status,
             })
           } else {
             this.$nuxt.error({
               status: response?.status ?? 500,
               message:
-                response?.errors ??
+                response.data?.errors ??
                 'کابر عزیز مشکلی پیش آمده است. ما به آن رسیدگی میکنیم',
             })
           }
@@ -130,11 +130,11 @@ export default {
           this.$store.commit('SET_SNACK_BAR_OPTION', {
             message: err.response.data.errors,
             color: 'error',
-            status: err?.response?.status ?? 500,
+            status: err?.status ?? 500,
           })
         } else {
           this.$nuxt.error({
-            status: err?.response?.status ?? 500,
+            status: err?.status ?? 500,
             message:
               err?.message ??
               'کابر عزیز مشکلی پیش آمده است. ما به آن رسیدگی میکنیم',
