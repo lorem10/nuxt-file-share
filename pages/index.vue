@@ -2,7 +2,7 @@
   <v-container>
     <v-sheet rounded class="pa-5">
       <template v-if="docs.length > 0">
-        <h5 class="text-h5 pt-4 pb-5">
+        <h5 v-if="docsAuthorMe.length > 0" class="text-h5 pt-4 pb-5">
           فایل های به اشتراک گذاشته شده توسط شما
         </h5>
         <v-row v-if="!$fetchState.pending">
@@ -37,7 +37,9 @@
             </v-card>
           </v-col>
         </v-row>
-        <h5 class="text-h5 pt-4 pb-5">فایل های به اشتراک گذاشته برای من</h5>
+        <h5 v-if="docsShareForMe.length > 0" class="text-h5 pt-4 pb-5">
+          فایل های به اشتراک گذاشته برای من
+        </h5>
         <v-row v-if="!$fetchState.pending">
           <v-col
             v-for="(doc, index) of docsShareForMe"
