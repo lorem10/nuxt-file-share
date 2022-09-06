@@ -27,11 +27,15 @@ export default {
   layout: 'auth',
 
   mounted() {
-    this.$store.commit('SET_SNACK_BAR_OPTION', {
-      message: 'برای ثبت نام، اطلاعات خود را وارد نمایید. فقط فیلد های دارای ستاره الزامی میباشند',
-      color: 'info',
-      status: 200,
-    })
+    if (this.$store.state.hints.register !== true) {
+      this.$store.commit('SET_SNACK_BAR_OPTION', {
+        message:
+          'برای ثبت نام، اطلاعات خود را وارد نمایید. فقط فیلد های دارای ستاره الزامی میباشند',
+        color: 'info',
+        status: 200,
+      })
+      this.$store.commit('SET_HINTS', 'register')
+    }
   },
 }
 </script>

@@ -32,7 +32,7 @@
       <v-col cols="6">
         <M-BoxInput
           v-model="passwordRepeat"
-          rules="required|min:8|max:100"
+          rules="required|min:8|max:100|confirmed:رمزعبور*"
           type="password"
           label="تکرار رمز عبور*"
           solo
@@ -166,7 +166,7 @@ export default {
           this.registerFormData
         )
         if (response.isSuccess !== true) {
-          if (response.errors) {
+          if (response?.errors) {
             this.$store.commit('SET_SNACK_BAR_OPTION', {
               message: response.errors,
               color: 'error',
@@ -189,29 +189,13 @@ export default {
           this.$router.push('/login')
         }
       } catch (err) {
-        if (err.response.isSuccess !== true) {
-          if (err.response.errors) {
-            this.$store.commit('SET_SNACK_BAR_OPTION', {
-              message: err.response.errors,
-              color: 'error',
-              status: err.response.status,
-            })
-          } else {
-            this.$nuxt.error({
-              status: err.response.status ?? 500,
-              message:
-                err.response.errors ??
-                'کابر عزیز مشکلی پیش آمده است. ما به آن رسیدگی میکنیم',
-            })
-          }
-        } else if (err.response.isSuccess === true) {
-          this.$store.commit('SET_SNACK_BAR_OPTION', {
-            message: 'ثبت نام شما با موفقت انجام شد',
-            color: 'green',
-            status: 200,
-          })
-          this.$router.push('/login')
-        }
+        this.$store.commit('SET_SNACK_BAR_OPTION', {
+          message:
+            err.response?.data?.errors ??
+            'کابر عزیز مشکلی پیش آمده است. ما به آن رسیدگی میکنیم',
+          color: 'error',
+          status: err.response.status,
+        })
       }
     },
   },

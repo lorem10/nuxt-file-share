@@ -5,6 +5,11 @@
         <v-sheet rounded class="pa-5">
           <h3 class="h5 pb-5">کابرانی که دسترسی به این فایل دارند</h3>
           <v-data-table :items="table.data" :headers="table.header">
+            <template #[`item.haveAccess`]="{ item }">
+              <v-btn color="primary" @click="setPermisson(false, item.userId)">
+                حذف دسترسی
+              </v-btn>
+            </template>
           </v-data-table>
         </v-sheet>
       </v-col>
@@ -18,7 +23,7 @@
             chips
           ></v-combobox>
           <div>
-            <v-radio-group v-model="radioGroup">
+            <!-- <v-radio-group v-model="radioGroup">
               <v-radio
                 v-for="n in [
                   { value: 1, text: 'دسترسی داشته باشد' },
@@ -28,8 +33,10 @@
                 :label="n.text"
                 :value="n.value"
               ></v-radio>
-            </v-radio-group>
-            <v-btn color="primary" @click="setPermisson"> ارسال </v-btn>
+            </v-radio-group> -->
+            <v-btn color="primary" @click="setPermisson(true)">
+              افزودن دسترسی
+            </v-btn>
           </div>
         </v-sheet>
       </v-col>
@@ -65,6 +72,10 @@ export default {
             text: 'نام خانوادگی',
             value: 'lastName',
           },
+          {
+            text: 'دسترسی',
+            value: 'haveAccess',
+          },
         ],
       },
     }
@@ -73,13 +84,14 @@ export default {
     await this.getAllUsers()
     await this.getAllPermittedUsers()
   },
+
   methods: {
-    async setPermisson() {
+    async setPermisson(haveAccess, targetUserId = this.userAccess.userId) {
       try {
         const response = await this.$axios.post('Permission', {
-          targetUserId: this.userAccess.userId,
+          targetUserId,
           documentId: Number(this.$route.params.id),
-          haveAccess: Boolean(this.radioGroup),
+          haveAccess,
         })
         if (response.status !== 200) {
           if (response?.data?.errors) {
@@ -120,7 +132,13 @@ export default {
       try {
         const response = await this.$axios.get(`Identity/GetAllUsers/`)
         if (response.status === 200) {
-          this.users = response.data
+          const users = response.data
+          for (let i = 0; i < users.length; i++) {
+            if (users[i].userId === this.$auth.user.userId) {
+              users.splice(i, 1)
+            }
+          }
+          this.users = users
         } else {
           this.$nuxt.error({
             status: response?.status ?? 500,

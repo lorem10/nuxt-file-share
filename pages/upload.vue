@@ -19,7 +19,7 @@
             <M-BoxInput
               v-model="uploadFormData.title"
               rules="required|min:3|max:30"
-              label="عنوان"
+              label="عنوان*"
               solo
             ></M-BoxInput>
             <M-BoxSelect
@@ -50,7 +50,7 @@
               v-model="uploadFormData.file"
               required
               solo
-              label="انتخاب فایل"
+              label="انتخاب فایل*"
             />
             <v-btn color="primary" type="submit"> ارسال سند </v-btn>
           </M-BoxForm>
@@ -71,7 +71,7 @@ export default {
         { text: 'عمومی', value: 1 },
       ],
       uploadFormData: {
-        code: null,
+        code: '',
         title: '',
         description: '',
         documentAccess: 0,
@@ -81,12 +81,15 @@ export default {
     }
   },
   mounted() {
-    this.$store.commit('SET_SNACK_BAR_OPTION', {
-      message:
-        'در صفحه میتوانید سند خود را بارگزاری نمایید، فیلد کد سند اختیاری میباشد',
-      color: 'info',
-      status: 200,
-    })
+    if (this.$store.state.hints.upload !== true) {
+      this.$store.commit('SET_SNACK_BAR_OPTION', {
+        message:
+          'در صفحه میتوانید سند خود را بارگزاری نمایید، فیلد کد سند اختیاری میباشد',
+        color: 'info',
+        status: 200,
+      })
+    }
+    this.$store.commit('SET_HINTS', 'upload')
   },
   methods: {
     initFormData() {
@@ -108,13 +111,13 @@ export default {
             this.$store.commit('SET_SNACK_BAR_OPTION', {
               message: response.data.errors,
               color: 'error',
-              status: response.data.status,
+              status: response.status,
             })
           } else {
             this.$nuxt.error({
               status: response?.status ?? 500,
               message:
-                response?.errors ??
+                response.data?.errors ??
                 'کابر عزیز مشکلی پیش آمده است. ما به آن رسیدگی میکنیم',
             })
           }
@@ -124,17 +127,18 @@ export default {
             color: 'green',
             status: 200,
           })
+          this.$router.push('/')
         }
       } catch (err) {
         if (err?.response?.data?.errors) {
           this.$store.commit('SET_SNACK_BAR_OPTION', {
             message: err.response.data.errors,
             color: 'error',
-            status: err?.response?.status ?? 500,
+            status: err?.status ?? 500,
           })
         } else {
           this.$nuxt.error({
-            status: err?.response?.status ?? 500,
+            status: err?.status ?? 500,
             message:
               err?.message ??
               'کابر عزیز مشکلی پیش آمده است. ما به آن رسیدگی میکنیم',
