@@ -81,12 +81,15 @@ export default {
     }
   },
   mounted() {
-    this.$store.commit('SET_SNACK_BAR_OPTION', {
-      message:
-        'در صفحه میتوانید سند خود را بارگزاری نمایید، فیلد کد سند اختیاری میباشد',
-      color: 'info',
-      status: 200,
-    })
+    if (this.$store.state.hints.upload !== true) {
+      this.$store.commit('SET_SNACK_BAR_OPTION', {
+        message:
+          'در صفحه میتوانید سند خود را بارگزاری نمایید، فیلد کد سند اختیاری میباشد',
+        color: 'info',
+        status: 200,
+      })
+    }
+    this.$store.commit('SET_HINTS', 'upload')
   },
   methods: {
     initFormData() {
@@ -124,6 +127,7 @@ export default {
             color: 'green',
             status: 200,
           })
+          this.$router.push('/')
         }
       } catch (err) {
         if (err?.response?.data?.errors) {

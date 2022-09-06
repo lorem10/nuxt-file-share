@@ -24,11 +24,14 @@ export default {
   name: 'LoginPage',
   layout: 'auth',
   mounted() {
-    this.$store.commit('SET_SNACK_BAR_OPTION', {
-      message: 'لطفا برای ورود نام کاربری و رمز عبور خود را وارد نمایید',
-      color: 'info',
-      status: 200,
-    })
+    if (this.$store.state.hints.login !== true) {
+      this.$store.commit('SET_SNACK_BAR_OPTION', {
+        message: 'لطفا برای ورود نام کاربری و رمز عبور خود را وارد نمایید',
+        color: 'info',
+        status: 200,
+      })
+    }
+    this.$store.commit('SET_HINTS', 'login')
   },
 }
 </script>

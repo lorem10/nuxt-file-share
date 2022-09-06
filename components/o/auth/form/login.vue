@@ -51,7 +51,7 @@ export default {
           }
         }
       } catch (err) {
-        if (err.response.status === 406) {
+        if (err?.response?.status === 406) {
           this.$store.commit('SET_SNACK_BAR_OPTION', {
             message: 'نام کاربری یا رمز عبور اشتباه میباشد',
             color: 'error',

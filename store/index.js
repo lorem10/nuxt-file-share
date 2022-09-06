@@ -5,6 +5,12 @@ export const state = () => ({
     color: 'error',
     status: 0,
   },
+  hints: {
+    index: false,
+    login: false,
+    register: false,
+    upload: false,
+  },
 })
 
 export const mutations = {
@@ -13,5 +19,8 @@ export const mutations = {
     state.snackbar.message = value.message
     state.snackbar.color = value.color
     state.snackbar.status = value.status
+  },
+  SET_HINTS: (state, value) => {
+    state.hints[value] = true
   },
 }

@@ -134,11 +134,14 @@ export default {
     },
   },
   mounted() {
-    this.$store.commit('SET_SNACK_BAR_OPTION', {
-      message: 'در این صفحه تمامی سند های قابل دسترس را مشاهده میکنید',
-      color: 'info',
-      status: 200,
-    })
+    if (this.$store.state.hints.index !== true) {
+      this.$store.commit('SET_SNACK_BAR_OPTION', {
+        message: 'در این صفحه تمامی سند های قابل دسترس را مشاهده میکنید',
+        color: 'info',
+        status: 200,
+      })
+      this.$store.commit('SET_HINTS', 'index')
+    }
   },
 }
 </script>

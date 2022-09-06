@@ -84,6 +84,7 @@ export default {
     await this.getAllUsers()
     await this.getAllPermittedUsers()
   },
+
   methods: {
     async setPermisson(haveAccess, targetUserId = this.userAccess.userId) {
       try {
@@ -131,7 +132,13 @@ export default {
       try {
         const response = await this.$axios.get(`Identity/GetAllUsers/`)
         if (response.status === 200) {
-          this.users = response.data
+          const users = response.data
+          for (let i = 0; i < users.length; i++) {
+            if (users[i].userId === this.$auth.user.userId) {
+              users.splice(i, 1)
+            }
+          }
+          this.users = users
         } else {
           this.$nuxt.error({
             status: response?.status ?? 500,

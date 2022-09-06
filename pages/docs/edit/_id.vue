@@ -39,7 +39,7 @@
               label="توضیحات"
               solo
             ></M-BoxTextarea>
-            <v-btn color="primary" type="submit"> ارسال سند </v-btn>
+            <v-btn color="primary" type="submit"> ثبت تغییرات </v-btn>
           </M-BoxForm>
         </v-sheet>
       </v-col>
@@ -71,10 +71,10 @@ export default {
         `document/${this.$route.params.id}`
       )
       if (response.status === 200) {
-        this.editFormData.code = response.data.code
-        this.editFormData.title = response.data.title
-        this.editFormData.description = response.data.description
-        this.editFormData.documentAccess = response.data.documentAccess
+        this.editFormData.code = response.data?.code
+        this.editFormData.title = response.data?.title
+        this.editFormData.description = response.data?.description
+        this.editFormData.documentAccess = response.data?.documentAccess
       } else {
         this.$nuxt.error({
           status: response?.status ?? 500,
@@ -124,8 +124,9 @@ export default {
             })
           }
         } else {
+          this.$router.push('/')
           this.$store.commit('SET_SNACK_BAR_OPTION', {
-            message: 'سند با موفقیت آپلود شد',
+            message: 'تغییرات با موفقیت ثبت شد',
             color: 'green',
             status: 200,
           })
